@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage"
 import "./style.scss";
 function App() {
     return (
-        <HomePage />
+        <RegistrationPage />
   );
 }
 
