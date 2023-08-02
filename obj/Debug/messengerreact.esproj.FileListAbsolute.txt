@@ -1,0 +1,2 @@
+C:\Users\User\Desktop\MessengerReact\MessengerReact\obj\Debug\messengerreact.esproj.SuggestedBindingRedirects.cache
+C:\Users\User\Desktop\MessengerReact\MessengerReact\obj\Debug\messengerreact.esproj.CoreCompileInputs.cache
