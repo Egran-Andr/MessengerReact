@@ -1,14 +1,14 @@
 import React from 'react';
-
-const Navbar = () => {
-
+import { signOut } from "firebase/auth";
+import { auth} from'../firebase'
+const Navbar = () => { 
     return (
         <div className="navbar">
             <span className="logo">Chat</span>
             <div className="user">
                 <img src="" alt=""></img>
                 <span>AccountName</span>
-                <button>logout</button>
+                <button onClick={() => signOut(auth)}>logout</button>
             </div>
 
         </div>
