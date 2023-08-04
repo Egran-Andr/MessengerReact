@@ -1,8 +1,11 @@
 import React from "react"
+import { useState, getStorage } from "react";
 import Add from "../img/addAvatar.png"
-import {createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
-import { useState } from "react";
+import {createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
+import { auth, db, storage } from "../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore"; 
+
 const RegistrationPage = () => {
     const [err, setErr] = useState(false);
     const handleSubmit = async (e) => {
@@ -15,6 +18,40 @@ const RegistrationPage = () => {
 
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
+            const storageRef = ref(storage, displayName);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            // Listen for state changes, errors, and completion of the upload.
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                 }, 
+                (error) => {
+                    console.log('Error upload file', error)
+                    setErr(true);
+                },
+                () => {
+                    // Upload completed successfully, now we can get the download URL
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        await updateProfile(res.user, {
+                            displayName,
+                            photoURL: downloadURL
+                        });
+                        await setDoc(doc(db, "users", res.user.uid), {
+                            uid: res.user.uid,
+                            displayName,
+                            email,
+                            photoURL: downloadURL,
+                        });
+
+                        await setDoc(doc(db, "userChats", res.user.uid), {});
+
+
+                    });
+
+                }
+            );
+
         }
         catch (err) {
             setErr(true);
