@@ -65,11 +65,13 @@ const Search = () => {
                 await updateDoc(doc(db, "userChats", user.uid), {
                     [combinedId + ".userInfo"]: {
                         uid: currentUser.uid,
-                        displayName: currentUser.displayName,
+                        displayName: currentUser.displayName,//why the hell it is null?
                         photoURL: currentUser.photoURL,
                     },
                     [combinedId + ".date"]: serverTimestamp(),
                 });
+                console.log("user:".currentUser.displayName)
+                console.log("user:".currentUser.photoURL)
             }
         } catch (err) { }
 
